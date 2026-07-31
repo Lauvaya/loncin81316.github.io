@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <!link rel="icon" type="image/png" href="./favicon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BNRS10.8 Battery</title>
+    <style>
+      :root {
+        --radius: 0.625rem;
+        --background: #f7f9fb;
+        --foreground: #0f172a;
+        --card: #ffffff;
+        --card-foreground: #0f172a;
+        --primary: #1e4a7a;
+        --primary-foreground: #ffffff;
+        --muted: #eef2f6;
+        --muted-foreground: #5f6b7a;
+        --border: #dde4ec;
+        --shadow-card: 0 1px 3px rgba(15, 23, 42, 0.06), 0 1px 2px rgba(15, 23, 42, 0.04);
+        --shadow-hover: 0 10px 25px rgba(15, 23, 42, 0.1);
+      }
+
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --background: #0f172a;
+          --foreground: #f1f5f9;
+          --card: #1e293b;
+          --card-foreground: #f1f5f9;
+          --primary: #60a5fa;
+          --primary-foreground: #0f172a;
+          --muted: #1e293b;
+          --muted-foreground: #94a3b8;
+          --border: #334155;
+        }
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        background: var(--background);
+        color: var(--foreground);
+        line-height: 1.5;
+        min-height: 100vh;
+      }
+
+      .container {
+        width: 100%;
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 2rem 1rem;
+      }
+
+      @media (min-width: 768px) {
+        .container {
+          padding: 3rem 1.5rem;
+        }
+      }
+
+      header {
+        text-align: center;
+        margin-bottom: 2rem;
+      }
+
+      @media (min-width: 768px) {
+        header {
+          margin-bottom: 2.5rem;
+        }
+      }
+
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        border-radius: 9999px;
+        background: rgba(30, 74, 122, 0.1);
+        color: var(--primary);
+        padding: 0.375rem 1rem;
+        font-size: 0.875rem;
+        font-weight: 500;
+        margin-bottom: 1rem;
+      }
+
+      .badge svg {
+        width: 1rem;
+        height: 1rem;
+      }
+
+      h1 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        line-height: 1.2;
+        letter-spacing: -0.02em;
+        color: var(--foreground);
+      }
+
+      @media (min-width: 768px) {
+        h1 {
+          font-size: 2.25rem;
+        }
+      }
+
+      .subtitle {
+        max-width: 65ch;
+        margin: 0.75rem auto 0;
+        color: var(--muted-foreground);
+        font-size: 0.875rem;
+      }
+
+      @media (min-width: 768px) {
+        .subtitle {
+          font-size: 1rem;
+        }
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+
+      @media (min-width: 1024px) {
+        .grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+
+      @media (min-width: 1280px) {
+        .grid {
+          grid-template-columns: repeat(3, 1fr);
+        }
+      }
+
+      .card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow-card);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        transition: box-shadow 0.2s ease;
+      }
+
+      .card:hover {
+        box-shadow: var(--shadow-hover);
+      }
+
+      .card-header {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        padding: 0.75rem 1rem;
+        border-bottom: 1px solid var(--border);
+        background: var(--muted);
+      }
+
+      @media (min-width: 768px) {
+        .card-header {
+          flex-direction: row;
+          align-items: center;
+          justify-content: space-between;
+          padding: 0.75rem 1.5rem;
+        }
+      }
+
+      .file-info {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        min-width: 0;
+      }
+
+      .file-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 2.5rem;
+        height: 2.5rem;
+        border-radius: 0.5rem;
+        background: rgba(30, 74, 122, 0.1);
+        color: var(--primary);
+        flex-shrink: 0;
+      }
+
+      .file-icon svg {
+        width: 1.25rem;
+        height: 1.25rem;
+      }
+
+      .file-meta {
+        min-width: 0;
+      }
+
+      .file-title {
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: var(--card-foreground);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .file-desc {
+        font-size: 0.75rem;
+        color: var(--muted-foreground);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .actions {
+        display: flex;
+        gap: 0.5rem;
+        flex-shrink: 0;
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.375rem;
+        padding: 0 0.75rem;
+        height: 2rem;
+        border-radius: 0.375rem;
+        font-size: 0.75rem;
+        font-weight: 500;
+        cursor: pointer;
+        border: 1px solid transparent;
+        transition: background-color 0.2s, border-color 0.2s;
+        text-decoration: none;
+      }
+
+      .btn svg {
+        width: 1rem;
+        height: 1rem;
+      }
+
+      .btn-outline {
+        background: var(--card);
+        border-color: var(--border);
+        color: var(--card-foreground);
+      }
+
+      .btn-outline:hover {
+        background: var(--muted);
+      }
+
+      .btn-primary {
+        background: var(--primary);
+        color: var(--primary-foreground);
+      }
+
+      .btn-primary:hover {
+        opacity: 0.9;
+      }
+
+      .card-body {
+        flex: 1;
+        position: relative;
+        min-height: 50vh;
+      }
+
+      @media (min-width: 768px) {
+        .card-body {
+          min-height: 55vh;
+        }
+      }
+
+      .card-body iframe {
+        width: 100%;
+        height: 100%;
+        min-height: 50vh;
+        border: 0;
+        background: var(--card);
+      }
+
+      @media (min-width: 768px) {
+        .card-body iframe {
+          min-height: 55vh;
+        }
+      }
+
+      .overlay {
+        position: absolute;
+        inset: 0;
+        cursor: pointer;
+        background: transparent;
+        border: none;
+      }
+
+      .hint {
+        text-align: center;
+        margin-top: 1.5rem;
+        font-size: 0.75rem;
+        color: var(--muted-foreground);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <div class="badge">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.5 22H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.706.706l3.588 3.588A2.4 2.4 0 0 1 20 8v6"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="m14 20 2 2 4-4"/></svg>
+          <span>电池信息</span>
+        </div>
+        <h1>BNRS10.8 Battery</h1>
+        <p class="subtitle">以下文档包含电池法尽职调查报告及相关资料，点击文档区域可打开或下载完整 Word 文档。</p>
+      </header>
+
+      <div class="grid" id="doc-grid"></div>
+
+      <p class="hint">若文档未自动预览，请点击卡片上方「打开」或「下载」按钮查看完整内容</p>
+    </div>
+
+    <script>
+      const documents = [
+        {
+          title: '电池法尽职调查报告',
+          subtitle: '核心尽职调查文件',
+          fileName: '电池法尽职调查报告.docx',
+          path: './md_20260731_131507_1.docx'
+        },
+        {
+          title: '预防和管理废旧电池报告',
+          subtitle: '废旧电池管理专项报告',
+          fileName: '预防和管理废旧电池报告.docx',
+          path: './md_20260731_132332_3.docx'
+        },
+        {
+          title: '电池法相关图片资料',
+          subtitle: '附图与说明资料',
+          fileName: '电池法相关图片资料.docx',
+          path: './md_20260731_132325_2.docx'
+        }
+      ];
+
+      const fileIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>`;
+      const openIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>`;
+      const downloadIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V3"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/></svg>`;
+
+      function openDoc(path) {
+        window.open(path, '_blank');
+      }
+
+      function downloadDoc(path, fileName) {
+        const a = document.createElement('a');
+        a.href = path;
+        a.download = fileName;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      }
+
+      const grid = document.getElementById('doc-grid');
+      documents.forEach(doc => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+          <div class="card-header">
+            <div class="file-info">
+              <div class="file-icon">${fileIcon}</div>
+              <div class="file-meta">
+                <div class="file-title">${doc.title}</div>
+                <div class="file-desc">${doc.subtitle}</div>
+              </div>
+            </div>
+            <div class="actions">
+              <button class="btn btn-outline" type="button">${openIcon}<span>打开</span></button>
+              <button class="btn btn-primary" type="button">${downloadIcon}<span>下载</span></button>
+            </div>
+          </div>
+          <div class="card-body">
+            <iframe src="${doc.path}" title="${doc.title}"></iframe>
+            <button class="overlay" type="button" aria-label="打开或下载${doc.title}"></button>
+          </div>
+        `;
+
+        const [openBtn, downloadBtn] = card.querySelectorAll('.actions button');
+        const overlay = card.querySelector('.overlay');
+        openBtn.addEventListener('click', () => openDoc(doc.path));
+        overlay.addEventListener('click', () => openDoc(doc.path));
+        downloadBtn.addEventListener('click', () => downloadDoc(doc.path, doc.fileName));
+
+        grid.appendChild(card);
+      });
+    </script>
+  </body>
+</html>

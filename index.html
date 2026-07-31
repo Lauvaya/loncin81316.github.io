@@ -270,19 +270,9 @@
           min-height: 55vh;
         }
       }
-
-      .card-body iframe {
-        width: 100%;
-        height: 100%;
-        min-height: 50vh;
-        border: 0;
-        background: var(--card);
-      }
-
+   
       @media (min-width: 768px) {
-        .card-body iframe {
-          min-height: 55vh;
-        }
+       
       }
 
       .overlay {
@@ -306,44 +296,44 @@
       <header>
         <div class="badge">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.5 22H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.706.706l3.588 3.588A2.4 2.4 0 0 1 20 8v6"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="m14 20 2 2 4-4"/></svg>
-          <span>电池信息</span>
+          <span>Battery Info</span>
         </div>
         <h1>BNRS10.8 Battery</h1>
-        <p class="subtitle">制造商：Loncin General Power Equipment Co.,Ltd<br>
-          生产地址：NO.99 Hualong Road ,jiulong Industrial park Jiulongpo District,Chongqing,P.R.China<br>
-          电池种类：SLI<br>
-          电池结构：3INR19/66<br>
-          电池型号：BNRS10.8<br>
-          标称电压/容量/能量：10.8V/2Ah/21.6Wh<br>
-          重量:290g<br>
-          生产日期：06/2026<br>
-          从废物中回收并存在于电池活性材料中的钴≥16%、锂≥6%、镍≥6%</p>
+        <p class="subtitle">Manufacturer: Loncin General Power Equipment Co., Ltd<br>
+          Production Address: NO.99 Hualong Road, Jiulong Industrial Park, Jiulongpo District, Chongqing, P.R. China<br>
+          Battery Type: SLI<br>
+          Battery Structure: 3INR19/66<br>
+          Battery Model: BNRS10.8<br>
+          Nominal Voltage/Capacity/Energy: 10.8V/2Ah/21.6Wh<br>
+          Weight: 290g<br>
+          Production Date: 06/2026<br>
+          Cobalt ≥16%, Lithium ≥6%, Nickel ≥6% recovered from waste and present in the battery's active materials</p>
           <!-- <p class="subtitle">以下文档包含电池法尽职调查报告及相关资料，点击文档区域可打开或下载完整 Word 文档。</p>-->
       </header>
 
       <div class="grid" id="doc-grid"></div>
 
-      <p class="hint">若文档未自动预览，请点击卡片上方「打开」或「下载」按钮查看完整内容</p>
+      <p class="hint">If the document doesn't preview automatically, click the 'Open' or 'Download' button at the top of the card to view the full content.</p>
     </div>
 
     <script>
       const documents = [
         {
-          title: '电池法尽职调查报告',
-          subtitle: '核心尽职调查文件',
-          fileName: '电池法尽职调查报告.docx',
+          title: 'Battery Due Diligence Report',
+          subtitle: 'Core due diligence documents',
+          fileName: 'Battery Due Diligence Report.docx',
           path: './md_20260731_131507_1.docx'
         },
         {
-          title: '预防和管理废旧电池报告',
-          subtitle: '废旧电池管理专项报告',
-          fileName: '预防和管理废旧电池报告.docx',
+          title: 'Report on Preventing and Managing Used Batteries',
+          subtitle: 'Special Report on Used Battery Management',
+          fileName: 'Report on Preventing and Managing Used Batteries.docx',
           path: './md_20260731_132332_3.docx'
         },
         {
-          title: '电池法相关图片资料',
-          subtitle: '附图与说明资料',
-          fileName: '电池法相关图片资料.docx',
+          title: 'Images related to the battery method',
+          subtitle: 'Attached diagrams and explanatory materials',
+          fileName: 'Images related to the battery method.docx',
           path: './md_20260731_132325_2.docx'
         }
       ];
@@ -379,13 +369,13 @@
               </div>
             </div>
             <div class="actions">
-              <button class="btn btn-outline" type="button">${openIcon}<span>打开</span></button>
-              <button class="btn btn-primary" type="button">${downloadIcon}<span>下载</span></button>
+              <button class="btn btn-outline" type="button">${openIcon}<span>Open</span></button>
+              <button class="btn btn-primary" type="button">${downloadIcon}<span>Download</span></button>
             </div>
           </div>
           <div class="card-body">
-            <iframe src="${doc.path}" title="${doc.title}"></iframe>
-            <button class="overlay" type="button" aria-label="打开或下载${doc.title}"></button>
+            
+            <button class="overlay" type="button" aria-label="Open or download${doc.title}"></button>
           </div>
         `;
 

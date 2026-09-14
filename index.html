@@ -106,6 +106,7 @@
       }
 
       .subtitle {
+        text-align: left;
         max-width: 65ch;
         margin: 0.75rem auto 0;
         color: var(--muted-foreground);
@@ -270,7 +271,21 @@
           min-height: 55vh;
         }
       }
-   
+      
+       .card-body iframe {
+        width: 100%;
+        height: 100%;
+        min-height: 50vh;
+        border: 0;
+        background: var(--card);
+      }
+
+      @media (min-width: 768px) {
+        .card-body iframe {
+          min-height: 55vh;
+        }
+      }
+
       @media (min-width: 768px) {
        
       }
@@ -299,15 +314,17 @@
           <span>Battery Info</span>
         </div>
         <h1>BNRS10.8 Battery</h1>
-        <p class="subtitle">Manufacturer: Loncin General Power Equipment Co., Ltd<br>
-          Production Address: NO.99 Hualong Road, Jiulong Industrial Park, Jiulongpo District, Chongqing, P.R. China<br>
-          Battery Type: SLI<br>
-          Battery Structure: 3INR19/66<br>
-          Battery Model: BNRS10.8<br>
-          Nominal Voltage/Capacity/Energy: 10.8V/2Ah/21.6Wh<br>
-          Weight: 290g<br>
-          Production Date: 06/2026<br>
-          Cobalt ≥16%, Lithium ≥6%, Nickel ≥6% recovered from waste and present in the battery's active materials</p>
+        <p class="subtitle">1  Manufacturer：Loncin General Power Equipment Co.,Ltd<br>
+          2  Manufacturer Address：NO.99 Hualong Road ,jiulong Industrial park Jiulongpo District,Chongqing,P.R.China<br>
+          3  Production address：Qinggang industrial zone 402761 chongqing people’s republic of china<br>
+          4  Battery type：SLI<br>
+          5  Battery model：BNRS10.8、BNRS10.8-A<br>
+          6  Voltage/capacity/energy：10.8V/2Ah/21.6Wh<br>
+          7  The weight：290g<br>
+          8  The chemistry：NCM523、C24X12、F6LiP <br>
+          9  Usable extinguishing agent：water-based fire extinguisher <br>
+          10 Battery No:See QR code at the positive terminal<br>
+          11 Symbol for separate collection of batteries：<img src="images/batteries.jpg" alt="电池分类收集标志"> </p>
           <!-- <p class="subtitle">以下文档包含电池法尽职调查报告及相关资料，点击文档区域可打开或下载完整 Word 文档。</p>-->
       </header>
 
@@ -319,23 +336,17 @@
     <script>
       const documents = [
         {
-          title: 'Battery Due Diligence Report',
-          subtitle: 'Core due diligence documents',
-          fileName: 'Battery Due Diligence Report.docx',
-          path: './md_20260731_131507_1.docx'
+          title: 'EU Declaration of Compliance',
+          subtitle: 'EU Compliance Statement No. 002',
+          fileName: 'EU_DECLARATION_OF_CONFORMITY_No_002.pdf',
+          path: './EU_DECLARATION_OF_CONFORMITY_No_002.pdf'
         },
         {
-          title: 'Report on Preventing and Managing Used Batteries',
-          subtitle: 'Special Report on Used Battery Management',
-          fileName: 'Report on Preventing and Managing Used Batteries.docx',
-          path: './md_20260731_132332_3.docx'
+          title: 'Information pertaining to the prevention, management, and control of waste batteries',
+          subtitle: 'Information related to the prevention and management of waste batteries',
+          fileName: 'Information_on_prevention_and_management_of_waste_batteries.pdf',
+          path: './Information_on_prevention_and_management_of_waste_batteries.pdf'
         },
-        {
-          title: 'Images related to the battery method',
-          subtitle: 'Attached diagrams and explanatory materials',
-          fileName: 'Images related to the battery method.docx',
-          path: './md_20260731_132325_2.docx'
-        }
       ];
 
       const fileIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>`;
@@ -373,8 +384,9 @@
               <button class="btn btn-primary" type="button">${downloadIcon}<span>Download</span></button>
             </div>
           </div>
+          
           <div class="card-body">
-            
+            <iframe src="${doc.path}" title="${doc.title}"></iframe>
             <button class="overlay" type="button" aria-label="Open or download${doc.title}"></button>
           </div>
         `;

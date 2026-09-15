@@ -1,404 +1,292 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
-  <head>
-    <meta charset="UTF-8" />
-    <!link rel="icon" type="image/png" href="./favicon.png" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>BNRS10.8 Battery</title>
-    <style>
-      :root {
-        --radius: 0.625rem;
-        --background: #f7f9fb;
-        --foreground: #0f172a;
-        --card: #ffffff;
-        --card-foreground: #0f172a;
-        --primary: #1e4a7a;
-        --primary-foreground: #ffffff;
-        --muted: #eef2f6;
-        --muted-foreground: #5f6b7a;
-        --border: #dde4ec;
-        --shadow-card: 0 1px 3px rgba(15, 23, 42, 0.06), 0 1px 2px rgba(15, 23, 42, 0.04);
-        --shadow-hover: 0 10px 25px rgba(15, 23, 42, 0.1);
-      }
+<html lang="en" data-page-node-id="IXFovHtJGJLWtlrnfuonZW">
+<head data-page-node-id="6OlqOMS1aGVgZlw7vkiK4R">
+<meta charset="UTF-8" data-page-node-id="0mpiyhfGeDpM0lQZ3HCFKU">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" data-page-node-id="IkHwobthPss94xk9t930vj">
+<title>BNRS10.8 — SLI Battery Compliance Information</title>
+<!--
+  欧盟电池法 (EU) 2023/1542 Art 13(6) 二维码落地页 — 目标版式
+  ─────────────────────────────────────────────────────────
+  本页面即二维码所指向的内容。同型号所有电池共用此页（型号级二维码即可合规）。
+  使用说明（内部）：
+  1. 标注【核实】的字段必须替换为真实值后才能上线；
+  2. 所有 "Download" 按钮须指向稳定、长期有效的 PDF 直链；
+  3. 本页 URL 必须长期稳定（建议 /01/{GTIN} 的 GS1 Digital Link 结构），改版只改内容不改地址；
+  4. 页面语言：默认英语；须按 Art 13(6) 补充目标成员国要求的语言版本；
+  5. 上线前由欧盟授权代表/合规负责人复核一遍。
+-->
+<style>
+  :root{
+    --ink:#1a1d21; --ink-2:#5a6068; --ink-3:#8a9099;
+    --bg:#f4f5f7; --card:#ffffff; --line:#e4e6ea;
+    --blue:#185FA5; --blue-bg:#E6F1FB;
+    --green:#0F6E56; --green-bg:#E1F5EE;
+    --amber:#854F0B; --amber-bg:#FAEEDA;
+    --radius:12px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"PingFang SC","Microsoft YaHei",sans-serif;
+    background:var(--bg); color:var(--ink);
+    font-size:14px; line-height:1.55;
+  }
+  .wrap{max-width:480px;margin:0 auto;padding:0 14px 40px}
 
-      @media (prefers-color-scheme: dark) {
-        :root {
-          --background: #0f172a;
-          --foreground: #f1f5f9;
-          --card: #1e293b;
-          --card-foreground: #f1f5f9;
-          --primary: #60a5fa;
-          --primary-foreground: #0f172a;
-          --muted: #1e293b;
-          --muted-foreground: #94a3b8;
-          --border: #334155;
-        }
-      }
+  /* top bar */
+  .appbar{
+    position:sticky;top:0;z-index:10;
+    background:var(--card);border-bottom:1px solid var(--line);
+    padding:12px 16px;display:flex;align-items:center;gap:10px;
+    max-width:480px;margin:0 auto;
+  }
+  .appbar .mark{width:26px;height:26px;border-radius:6px;background:var(--blue);color:#fff;
+    display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600}
+  .appbar .t{font-size:13px;font-weight:500;color:var(--ink-2)}
 
-      * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-      }
+  /* hero */
+  .hero{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    padding:20px 18px 16px;margin-top:14px}
+  .chip{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:500;
+    padding:3px 9px;border-radius:999px;background:var(--blue-bg);color:var(--blue);margin-bottom:10px}
+  h1{font-size:22px;font-weight:600;letter-spacing:-.01em}
+  .hero .sub{font-size:13px;color:var(--ink-2);margin-top:2px}
+  .hero .meta{font-size:12px;color:var(--ink-3);margin-top:8px;padding-top:8px;border-top:1px solid var(--line)}
 
-      body {
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-        background: var(--background);
-        color: var(--foreground);
-        line-height: 1.5;
-        min-height: 100vh;
-      }
+  /* nav */
+  .nav{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+  .nav a{font-size:12px;color:var(--blue);background:var(--blue-bg);text-decoration:none;
+    padding:5px 10px;border-radius:999px}
 
-      .container {
-        width: 100%;
-        max-width: 1280px;
-        margin: 0 auto;
-        padding: 2rem 1rem;
-      }
+  /* sections */
+  section{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    margin-top:14px;overflow:hidden}
+  .sec-h{display:flex;align-items:flex-start;gap:10px;padding:14px 16px 0}
+  .sec-n{flex:none;width:22px;height:22px;border-radius:6px;background:var(--ink);color:#fff;
+    font-size:12px;font-weight:600;display:flex;align-items:center;justify-content:center;margin-top:1px}
+  .sec-h h2{font-size:15px;font-weight:600;line-height:1.3}
+  .sec-h .ref{font-size:11px;color:var(--ink-3);display:block;font-weight:400;margin-top:1px}
+  .sec-b{padding:10px 16px 16px}
 
-      @media (min-width: 768px) {
-        .container {
-          padding: 3rem 1.5rem;
-        }
-      }
+  .row{display:flex;justify-content:space-between;gap:16px;padding:7px 0;border-bottom:1px solid var(--line)}
+  .row:last-child{border-bottom:none}
+  .row .k{flex:none;width:44%;font-size:13px;color:var(--ink-2)}
+  .row .v{flex:1;font-size:13px;font-weight:500;text-align:right;word-break:break-word}
+  .row .v small{display:block;font-weight:400;color:var(--ink-3);font-size:11px;margin-top:1px}
 
-      header {
-        text-align: center;
-        margin-bottom: 2rem;
-      }
+  /* table for recycled content */
+  table{width:100%;border-collapse:collapse;margin-top:8px;font-size:13px}
+  th{font-size:11px;font-weight:500;color:var(--ink-2);text-align:left;padding:6px 8px;
+    background:var(--bg);border-bottom:1px solid var(--line)}
+  th:last-child,td:last-child{text-align:right}
+  td{padding:8px;border-bottom:1px solid var(--line);font-weight:500}
+  td:first-child{font-weight:400;color:var(--ink-2)}
+  tr:last-child td{border-bottom:none}
+  .zero{color:var(--ink-3);font-weight:400}
 
-      @media (min-width: 768px) {
-        header {
-          margin-bottom: 2.5rem;
-        }
-      }
+  /* document cards */
+  .doc{display:flex;align-items:center;gap:12px;padding:11px 12px;border:1px solid var(--line);
+    border-radius:10px;margin-top:8px}
+  .doc .ic{flex:none;width:34px;height:34px;border-radius:8px;background:var(--bg);
+    display:flex;align-items:center;justify-content:center}
+  .doc .info{flex:1;min-width:0}
+  .doc .info b{display:block;font-size:13px;font-weight:500}
+  .doc .info span{font-size:11px;color:var(--ink-3)}
+  .doc .btn{flex:none;font-size:12px;font-weight:500;color:#fff;background:var(--blue);
+    text-decoration:none;padding:6px 12px;border-radius:8px}
+  .doc .btn.ghost{background:var(--bg);color:var(--blue);border:1px solid var(--line)}
 
-      .badge {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        border-radius: 9999px;
-        background: rgba(30, 74, 122, 0.1);
-        color: var(--primary);
-        padding: 0.375rem 1rem;
-        font-size: 0.875rem;
-        font-weight: 500;
-        margin-bottom: 1rem;
-      }
+  .note{font-size:12px;color:var(--ink-2);background:var(--bg);border-radius:8px;
+    padding:10px 12px;margin-top:10px;line-height:1.5}
+  .note.warn{background:var(--amber-bg);color:var(--amber)}
+  .note b{font-weight:600}
+  .todo{display:inline-block;font-size:10px;font-weight:600;color:#fff;background:#C2410C;
+    border-radius:4px;padding:1px 5px;margin-left:5px;vertical-align:1px}
 
-      .badge svg {
-        width: 1rem;
-        height: 1rem;
-      }
+  footer{margin-top:20px;padding:16px;border-top:1px solid var(--line);
+    font-size:11px;color:var(--ink-3);line-height:1.6}
+  footer a{color:var(--blue);text-decoration:none}
+</style>
+</head>
+<body data-page-node-id="8v1HHO2B1I9GmUdYjLUAQr">
 
-      h1 {
-        font-size: 1.5rem;
-        font-weight: 700;
-        line-height: 1.2;
-        letter-spacing: -0.02em;
-        color: var(--foreground);
-      }
+<div class="appbar" data-page-node-id="I1WQBLSyYdHvqltSFGtLSt">
+  <div class="mark" data-page-node-id="isce2vZHNvzUEMOY1cNqOb">G</div>
+  <div class="t" data-page-node-id="dRhQQcGLPDxr1YOQt07lzw">General Power Equipment · Battery compliance</div>
+</div>
 
-      @media (min-width: 768px) {
-        h1 {
-          font-size: 2.25rem;
-        }
-      }
+<div class="wrap" data-page-node-id="ZxKRGgBoJqkFhAUyXXbtlD">
 
-      .subtitle {
-        text-align: left;
-        max-width: 65ch;
-        margin: 0.75rem auto 0;
-        color: var(--muted-foreground);
-        font-size: 0.875rem;
-      }
-
-      @media (min-width: 768px) {
-        .subtitle {
-          font-size: 1rem;
-        }
-      }
-
-      .grid {
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
-      }
-
-      @media (min-width: 1024px) {
-        .grid {
-          grid-template-columns: repeat(2, 1fr);
-        }
-      }
-
-      @media (min-width: 1280px) {
-        .grid {
-          grid-template-columns: repeat(3, 1fr);
-        }
-      }
-
-      .card {
-        background: var(--card);
-        border: 1px solid var(--border);
-        border-radius: var(--radius);
-        box-shadow: var(--shadow-card);
-        overflow: hidden;
-        display: flex;
-        flex-direction: column;
-        transition: box-shadow 0.2s ease;
-      }
-
-      .card:hover {
-        box-shadow: var(--shadow-hover);
-      }
-
-      .card-header {
-        display: flex;
-        flex-direction: column;
-        gap: 0.75rem;
-        padding: 0.75rem 1rem;
-        border-bottom: 1px solid var(--border);
-        background: var(--muted);
-      }
-
-      @media (min-width: 768px) {
-        .card-header {
-          flex-direction: row;
-          align-items: center;
-          justify-content: space-between;
-          padding: 0.75rem 1.5rem;
-        }
-      }
-
-      .file-info {
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-        min-width: 0;
-      }
-
-      .file-icon {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 2.5rem;
-        height: 2.5rem;
-        border-radius: 0.5rem;
-        background: rgba(30, 74, 122, 0.1);
-        color: var(--primary);
-        flex-shrink: 0;
-      }
-
-      .file-icon svg {
-        width: 1.25rem;
-        height: 1.25rem;
-      }
-
-      .file-meta {
-        min-width: 0;
-      }
-
-      .file-title {
-        font-size: 0.875rem;
-        font-weight: 600;
-        color: var(--card-foreground);
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-
-      .file-desc {
-        font-size: 0.75rem;
-        color: var(--muted-foreground);
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-
-      .actions {
-        display: flex;
-        gap: 0.5rem;
-        flex-shrink: 0;
-      }
-
-      .btn {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.375rem;
-        padding: 0 0.75rem;
-        height: 2rem;
-        border-radius: 0.375rem;
-        font-size: 0.75rem;
-        font-weight: 500;
-        cursor: pointer;
-        border: 1px solid transparent;
-        transition: background-color 0.2s, border-color 0.2s;
-        text-decoration: none;
-      }
-
-      .btn svg {
-        width: 1rem;
-        height: 1rem;
-      }
-
-      .btn-outline {
-        background: var(--card);
-        border-color: var(--border);
-        color: var(--card-foreground);
-      }
-
-      .btn-outline:hover {
-        background: var(--muted);
-      }
-
-      .btn-primary {
-        background: var(--primary);
-        color: var(--primary-foreground);
-      }
-
-      .btn-primary:hover {
-        opacity: 0.9;
-      }
-
-      .card-body {
-        flex: 1;
-        position: relative;
-        min-height: 50vh;
-      }
-
-      @media (min-width: 768px) {
-        .card-body {
-          min-height: 55vh;
-        }
-      }
-      
-       .card-body iframe {
-        width: 100%;
-        height: 100%;
-        min-height: 50vh;
-        border: 0;
-        background: var(--card);
-      }
-
-      @media (min-width: 768px) {
-        .card-body iframe {
-          min-height: 55vh;
-        }
-      }
-
-      @media (min-width: 768px) {
-       
-      }
-
-      .overlay {
-        position: absolute;
-        inset: 0;
-        cursor: pointer;
-        background: transparent;
-        border: none;
-      }
-
-      .hint {
-        text-align: center;
-        margin-top: 1.5rem;
-        font-size: 0.75rem;
-        color: var(--muted-foreground);
-      }
-    </style>
-  </head>
-  <body>
-    <div class="container">
-      <header>
-        <div class="badge">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.5 22H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.706.706l3.588 3.588A2.4 2.4 0 0 1 20 8v6"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="m14 20 2 2 4-4"/></svg>
-          <span>Battery Info</span>
-        </div>
-        <h1>BNRS10.8 Battery</h1>
-        <p class="subtitle">1  Manufacturer：Loncin General Power Equipment Co.,Ltd<br>
-          2  Manufacturer Address：NO.99 Hualong Road ,jiulong Industrial park Jiulongpo District,Chongqing,P.R.China<br>
-          3  Production address：Qinggang industrial zone 402761 chongqing people’s republic of china<br>
-          4  Battery type：SLI<br>
-          5  Battery model：BNRS10.8、BNRS10.8-A<br>
-          6  Voltage/capacity/energy：10.8V/2Ah/21.6Wh<br>
-          7  The weight：290g<br>
-          8  The chemistry：NCM523、C24X12、F6LiP <br>
-          9  Usable extinguishing agent：water-based fire extinguisher <br>
-          10 Battery No:See QR code at the positive terminal<br>
-          11 Symbol for separate collection of batteries：<img src="batteries.jpg" alt="电池分类收集标志"> </p>
-          <!-- <p class="subtitle">以下文档包含电池法尽职调查报告及相关资料，点击文档区域可打开或下载完整 Word 文档。</p>-->
-      </header>
-
-      <div class="grid" id="doc-grid"></div>
-
-      <p class="hint">If the document doesn't preview automatically, click the 'Open' or 'Download' button at the top of the card to view the full content.</p>
+  <!-- ═══ 抬头：型号识别 ═══ -->
+  <div class="hero" data-page-node-id="1c7Re62XSZvkVikpHGfFRE">
+    <div class="chip" data-page-node-id="TnOaINycA6ktPBkpFcEXFR">⚡ SLI battery — Start / Lighting / Ignition &amp; auxiliary power</div>
+    <h1 data-page-node-id="omc8MEnJoNShEdGDj6hdjq">BNRS10.8</h1>
+    <div class="sub" data-page-node-id="WuuZUdtFfeCVYnd0PNuwJf">Lithium-ion starter battery · Model BNRS10.8</div>
+    <div class="meta" data-page-node-id="qvhH2lOIZqo2Soqxm4lfgK">
+      Manufactured June 2026 · Chongqing, China &nbsp;·&nbsp;
+      Compliance information under Regulation (EU) 2023/1542, Art. 13(6)
     </div>
+    <div class="nav" data-page-node-id="ZjGuNikzjYDYvL5dTXXSPe">
+      <a href="#label" data-page-node-id="dgJIaKdDXWGKgnL85fMmNW">Product &amp; label</a>
+      <a href="#doc" data-page-node-id="t8wiotwyjL5aT1zgojihMI">Conformity</a>
+      <!--<a href="#recycled" data-page-node-id="rfXNHwsAyALJFi2oBuhQbM">Recycled content</a>-->
+      <!--<a href="#dd" data-page-node-id="8MY4CzEc4JiimNnz7zMpNk">Due diligence</a>-->
+      <a href="#waste" data-page-node-id="6NXKViHKCUAIefvEup0A5k">End-of-life</a>
+    </div>
+  </div>
 
-    <script>
-      const documents = [
-        {
-          title: 'EU Declaration of Compliance',
-          subtitle: 'EU Compliance Statement No. 002',
-          fileName: 'EU_DECLARATION_OF_CONFORMITY_No_002.pdf',
-          path: './EU_DECLARATION_OF_CONFORMITY_No_002.pdf'
-        },
-        {
-          title: 'Information pertaining to the prevention, management, and control of waste batteries',
-          subtitle: 'Information related to the prevention and management of waste batteries',
-          fileName: 'Information_on_prevention_and_management_of_waste_batteries.pdf',
-          path: './Information_on_prevention_and_management_of_waste_batteries.pdf'
-        },
-      ];
+  <!-- ═══ 1. 产品与标签信息 ═══ -->
+  <section id="label" data-page-node-id="ctc5Z5LrkKxlBPpeXJB0nb">
+    <div class="sec-h" data-page-node-id="Vb7cnuK3fiIwHJbV94EIWK">
+      <div class="sec-n" data-page-node-id="eMjbNMp7gR2TDiIizQnb54">1</div>
+      <h2 data-page-node-id="ZIisAfTZ72VGFvkklcBFuo">Product and label information
+        <!--<span class="ref" data-page-node-id="ZA3nrwQHJAIA7bcDPCawaq">Art. 13(1)–(3) &amp; Annex VI Part A · identification per Art. 38</span>--></h2>
+    </div>
+    <div class="sec-b" data-page-node-id="cGxpRjx2VYQP1ycPD2R94F">
+      <div class="row" data-page-node-id="BhBWuoxHfc4EfGlk0S7L3R"><div class="k" data-page-node-id="onxhZN5iOh56RTbWNtvKwL">Manufacturer</div>
+        <div class="v" data-page-node-id="Ch9GYrzAhQDVChfcFkZKIX">Loncin General Power Equipment Co.,Ltd</div></div>
+      <div class="row" data-page-node-id="GPHBXHB9iyaR0bTTSwiWK1"><div class="k" data-page-node-id="4BeLaP3qi2dXBGRQxDRCYM">Manufacturer Address</div>
+        <div class="v" data-page-node-id="e9aVe3In8s6UiFHX1hXptV">NO.99 Hualong Road ,jiulong Industrial park Jiulongpo District,Chongqing,P.R.China</div></div>
+      <div class="row" data-page-node-id="eMwkI6OYMepaKynLcPg5mx"><div class="k" data-page-node-id="r3aVbrohTNcCeQIn8rpyiU">Production address</div>
+        <div class="v" data-page-node-id="bpHrlGRvQJUYVCUg4OZocy">Qinggang industrial zone 402761 chongqing people’s republic of china</div></div>
+      <div class="row" data-page-node-id="c5M5g7FgwIGPtb9eSISYrJ"><div class="k" data-page-node-id="093EMCybl1I0ONhnqOVMWV">Battery type</div>
+        <div class="v" data-page-node-id="kq2uJHOtFxKplASt1OrDt1">SLI</div></div>
+      <div class="row" data-page-node-id="0FqNEq4CbRGbPkRpw2dglz"><div class="k" data-page-node-id="oi79KDzPUPJgWkKpylUByy">Battery model</div>
+        <div class="v" data-page-node-id="VmHfLqVa9LfPCV6JvQI6Ju">BNRS10.8、BNRS10.8-A</div></div>
+      <div class="row" data-page-node-id="1X3HMO30CppZsEzrDwXaoJ"><div class="k" data-page-node-id="TzHgWjDrfF3dbbjZKyhN5O">Voltage/capacity/energy</div>
+        <div class="v" data-page-node-id="i8hraF1DCXQAPm86nyMgI8">10.8V/2Ah/21.6Wh</div></div>
+      <div class="row" data-page-node-id="mTT5lVOPF9gJKrVCaIiKYM"><div class="k" data-page-node-id="HUp2lgRwihJBdKoyP7wvAC">The weight</div>
+        <div class="v" data-page-node-id="S8gAM4ur4zyBe1GXkIO4Hq">290g</div></div>
+      <div class="row" data-page-node-id="1jo2sGtYbYFRI6yyhGk0Rs"><div class="k" data-page-node-id="yVmOLZz7qFTBwken4uLcTe">The chemistry</div>
+        <div class="v" data-page-node-id="fxvB4HFa8G00tWS4gagy6T">NCM523、C24X12、F6LiP</div></div>
+      <div class="row" data-page-node-id="QK4dDbeE7AR199kfGuDxiU"><div class="k" data-page-node-id="0z7QCn0cAzSFnGL4sWTLvW">Usable extinguishing agent</div>
+        <div class="v" data-page-node-id="9XWFidMp5nABNLcC8qsrkD">water-based fire extinguisher</div></div>
+      <div class="row" data-page-node-id="6NLx9S2chdjsF9as48HD5r"><div class="k" data-page-node-id="rj7bJFdE196O3srwpmCYul">Battery No</div>
+        <div class="v" data-page-node-id="QB6WgPz8qzoTs2RALYD35h">See QR code at the positive terminal</div></div>
+      <div class="row" data-page-node-id="NUuIjUr7Yzd2d768DKdbHI"><div class="k" data-page-node-id="BRsKDynmHIch8DBKgoie3S">Symbol for separate collection of batteries</div>
+        <div class="v" data-page-node-id="4P58mViE00L34TGGKlcRCk"><img src="images/batteries.png" alt="电池分类收集标志"> </div></div>
+    </div>
+  </section>
 
-      const fileIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>`;
-      const openIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>`;
-      const downloadIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V3"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/></svg>`;
+  <!-- ═══ 2. 符合性声明 ═══ -->
+  <section id="doc" data-page-node-id="UyfaMAx3iVJmwBpFLoJZn1">
+    <div class="sec-h" data-page-node-id="5gp4xyCBUIGaCPVUJpEsg1">
+      <div class="sec-n" data-page-node-id="eWQKP34xpEUrILkjpdRQj4">2</div>
+      <h2 data-page-node-id="yB0zU5aC4awpsSBJbsGc3L">EU Declaration of Conformity
+        <!--<span class="ref" data-page-node-id="XobShytBzIEhUlZj4jDDGm">Art. 18 — 结果符合 Art. 3 与 Annex I</span>--></h2>
+    </div>
+    <div class="sec-b" data-page-node-id="vc47WuBY1EPUQpbrFL3LAT">
+      <div class="doc" data-page-node-id="KmjJAGBukqIzi7AEoVvTxM">
+        <div class="ic" data-page-node-id="LvUVHEiSD18y4x7314bJ6H">📄</div>
+        <div class="info" data-page-node-id="mIFFdlTtCPGMlvDHaGYaka"><b data-page-node-id="6CdaTlx0PbJai3Hl0WFQnO">DoC — BNRS10.8</b><span data-page-node-id="E2uTCYmsNwKXjXRjY2f0Kb">PDF · version 1.0 · 2026-06</span></div>
+        <a class="btn" href="./EU_DECLARATION_OF_CONFORMITY_No_002.pdf" data-page-node-id="CLovD0GgM692jcahApBxPe">Download</a>
+      </div>
+      <div class="note" data-page-node-id="FArDsM4OezdPgPBFvzMI3N">
+        This battery is CE-marked and conforms with Regulation (EU) 2023/1542.
+        The declaration is kept up to date whenever a change affects conformity.
+      </div>
+    </div>
+  </section>
 
-      function openDoc(path) {
-        window.open(path, '_blank');
-      }
+  <!-- ═══ 3. 再生料含量 ═══ -->
+  <!--<section id="recycled" data-page-node-id="X8rUiLz3CCgyjb2PDp5Kzd">
+    <div class="sec-h" data-page-node-id="EdlAm91c3AtFaXzq0Y8YyH">
+      <div class="sec-n" data-page-node-id="1DyCjtyQ9gke0Xtxfv4EMZ">3</div>
+      <h2 data-page-node-id="bL3HiWivAPxEy0DJebkWAE">Recycled content recovered from waste
+        <span class="ref" data-page-node-id="FyUykKx5PvxinQD7xLRBw4">Art. 13(6)(c) · calculated in accordance with Art. 8 · documented per Art. 7</span></h2>
+    </div>
+    <div class="sec-b" data-page-node-id="V1CWYAVq0q6jVgzXaZRp2C">
+      <table data-page-node-id="OOX8h1IfpQbfbqrwlTcjiI">
+        <tr data-page-node-id="IjbZWSYVbxjdQEbSSBIG19"><th data-page-node-id="v6aCQGrmwLmETbNRBd13cd">Element in active material</th><th data-page-node-id="I5MZl1ubRmygOCEFQmrWPI">Share recovered from waste</th></tr>
+        <tr data-page-node-id="pRjPKhfHsEdDDyiJHQoPiL"><td data-page-node-id="FKTlsXyh6cgrAVt8w7958x">Cobalt (Co)</td><td data-page-node-id="Tl6Mh1cxgL2AyZZvNL3DxE">31 %</td></tr>
+        <tr data-page-node-id="MZFMd750o0gN2PxlwN7iOv"><td data-page-node-id="1Xd0MdvXYkotQ1T5uYntYL">Lead (Pb)</td><td class="zero" data-page-node-id="kkduxfFJ7n3tvLVEUz7LNO">0 % — not contained</td></tr>
+        <tr data-page-node-id="M95eAcJbDSqPwtUQFqba58"><td data-page-node-id="rHdL33Tq1W3gHtFBIzilml">Lithium (Li)</td><td data-page-node-id="NMu9Nw0Jm9U6BaKQCoQ67G">8 %</td></tr>
+        <tr data-page-node-id="dGUJn1y2Y42HMqhEQi4Mp6"><td data-page-node-id="kvXxWvYedq1ircrOtDueCA">Nickel (Ni)</td><td data-page-node-id="mlm4o8m8pZbHhbmJKMnxdu">26 %</td></tr>
+      </table>
+      <div class="note" data-page-node-id="80BCAcXl0TdQlfB05CpdvG">
+        Values are determined per battery model in accordance with Article 8 and kept
+        <b data-page-node-id="iDuNMClcMChe9QRWUBFu6P">complete, up-to-date and accurate</b>. Documentation obligations under Art. 7
+        apply from 18 August 2028; 第三方核查安排请与公告机构确认【核实】.
+        <b data-page-node-id="sXIKmNcetRgTU6ok2w7WCZ">四项必须全部列出</b>——含铅为零也要标 "0 % — not contained"，缺项即缺义务内容。
+      </div>
+    </div>
+  </section>-->
 
-      function downloadDoc(path, fileName) {
-        const a = document.createElement('a');
-        a.href = path;
-        a.download = fileName;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-      }
+  <!-- ═══ 4. 供应链尽职调查 ═══ -->
+  <!--<section id="dd" data-page-node-id="u8rW5rbuTcjYq7BK4yrMsA">
+    <div class="sec-h" data-page-node-id="UKnFizNDoz5Cay3Pa7Pgzh">
+      <div class="sec-n" data-page-node-id="7Pc76fCtkgRRMjrEXwarVW">4</div>
+      <h2 data-page-node-id="R2PzJorxH7tiJBBSzTdBOq">Supply chain due diligence
+        <span class="ref" data-page-node-id="6AgGdjE3rBHnsNmQVsQVsl">Art. 52(3) — 尽职调查报告须公开可及，不得为空</span></h2>
+    </div>
+    <div class="sec-b" data-page-node-id="JgD45TAEQ840GFURuiDQBJ">
+      <div class="doc" data-page-node-id="XGdd7aQtpZy07AEjQW2vTy">
+        <div class="ic" data-page-node-id="UsWbovrLvds0xss0rlB0qF">📑</div>
+        <div class="info" data-page-node-id="ZHuRYiNXlnEPAyTrYRV0qR"><b data-page-node-id="xcxa90F60HZr8xmLU82nJA">Battery Due Diligence Report</b><span data-page-node-id="vAqF4ZiLlG4LC9CbIJUilw">PDF · reporting year 2026</span></div>
+        <a class="btn" href="#" data-page-node-id="bZ37zLfSCzUgsBa14veDPH">Download</a>
+      </div>
+      <div class="doc" data-page-node-id="RNmBwC3Q8FtG5wmNvmykhw">
+        <div class="ic" data-page-node-id="JCNwZfqDYwDrQjb9It3sce">🛡</div>
+        <div class="info" data-page-node-id="qUJcem6woY5tRoZBARtiXD"><b data-page-node-id="JsN9PtqlXGsnQF2Pt1eiqH">Due diligence policy — summary</b><span data-page-node-id="Xjyi2t90OIrtX8xcD5C0Vb">PDF · management system &amp; supplier code</span></div>
+        <a class="btn ghost" href="#" data-page-node-id="UCgRE9FGtaQb4TFa1GwI1s">Open</a>
+      </div>
+      <div class="note warn" data-page-node-id="A0c3hXzHhX6ZeEZqtddu3p">
+        样品页该栏目显示 "no records"：<b data-page-node-id="3BbuSTQEe1lIdEzjXJ5pfq">Art 52(3) 的报告是二维码必须可访问的法定内容</b>，
+        空栏目等于二维码义务未履行。第三方核查 2027-08-18 前须完成，请提前锁定公告机构。
+      </div>
+    </div>
+  </section>-->
+  
+  <!-- ═══ 5. 废电池预防与管理 ═══ -->
+  <section id="waste" data-page-node-id="VBCCeBuEOz7tTJQSQGFyXI">
+    <div class="sec-h" data-page-node-id="VDSE1k8rgrgl1snZ3Bapp6">
+      <div class="sec-n" data-page-node-id="klsRBFOFMSZ7dBfTDteHBE">5</div>
+      <h2 data-page-node-id="wJnxfLCldlMUzNpGmKUYJm">Waste prevention and management
+        <span class="ref" data-page-node-id="VFEpPG9mV8WIlBjj2BHFj4">Art. 74(1)(a)–(f) — 不得为空</span></h2>
+    </div>
+    <div class="sec-b" data-page-node-id="ppP7dpj50rAN7p02RuKtO2">
+      <div class="doc" data-page-node-id="5XYk5OYrHNiJY3QCKN7bTi">
+        <div class="ic" data-page-node-id="PrpxGAfRTt1asEUHPwrJ9F">♻️</div>
+        <div class="info" data-page-node-id="rnzH1LMELy0mAQ6qqe7IXw"><b data-page-node-id="lcQAgwZYdpNzE7YnCSPX8Y">Report on preventing &amp; managing waste batteries</b><span data-page-node-id="wgd7P9WBcZgCLh5Q3WpsPC">PDF · special report</span></div>
+        <a class="btn" href="./Information_on_prevention_and_management_of_waste_batteries.pdf" data-page-node-id="awqJd0S4148EGQIZgvJlDc">Download</a>
+      </div>
+      <div class="note" data-page-node-id="riOHPKN6pYZmSYyAnKHyuN">
+        <b data-page-node-id="H5AZLy8JtWqVs6YsiotwDS">Separate collection.</b> This symbol (<span style="font-size:13px" data-page-node-id="3dIChEEAdmpkdLeF6Fy8zq">🗑</span>) means the battery
+        must <b data-page-node-id="Le3sKVxtWfRgUKc6Qf2zPL">not</b> be disposed of with unsorted household waste. Return it free of charge to a
+        distributor take-back point or an authorised collection facility.<br data-page-node-id="MZY49AuN5eJgw23XTo8z8R"><br data-page-node-id="tuSoCHjO7LlQWwYMRTXhl0">
+        <b data-page-node-id="oczku1cDgx8DoFhuBAIC6y">Safety at end of life (lithium).</b> Do not open, crush or heat. Tape the terminals before
+        storage or transport and keep away from combustible materials.<br data-page-node-id="wjgbVs9AnkyHsVD4ZslrBo"><br data-page-node-id="uybAstKYHikf8GIPEENUuo">
+        <b data-page-node-id="j4VsH4qqaWaz8jYuEoAhHb">Second life &amp; recycling.</b> Reuse and remanufacturing are preferred where safe and
+        permitted; recycling shall take place at authorised facilities.
+      </div>
+    </div>
+  </section>
 
-      const grid = document.getElementById('doc-grid');
-      documents.forEach(doc => {
-        const card = document.createElement('div');
-        card.className = 'card';
-        card.innerHTML = `
-          <div class="card-header">
-            <div class="file-info">
-              <div class="file-icon">${fileIcon}</div>
-              <div class="file-meta">
-                <div class="file-title">${doc.title}</div>
-                <div class="file-desc">${doc.subtitle}</div>
-              </div>
-            </div>
-            <div class="actions">
-              <button class="btn btn-outline" type="button">${openIcon}<span>Open</span></button>
-              <button class="btn btn-primary" type="button">${downloadIcon}<span>Download</span></button>
-            </div>
-          </div>
-          
-          <div class="card-body">
-            <iframe src="${doc.path}" title="${doc.title}"></iframe>
-            <button class="overlay" type="button" aria-label="Open or download${doc.title}"></button>
-          </div>
-        `;
+  <!-- ═══ 6. 技术资料 ═══ -->
+  <!--<section data-page-node-id="403aS9gHNvqt8ApwM850pn">
+    <div class="sec-h" data-page-node-id="BGrgIODDArxHzIoCzsRE8R">
+      <div class="sec-n" data-page-node-id="Tx8Xs4VPgBUHO7zCTPNe9d">6</div>
+      <h2 data-page-node-id="xlzmbtmB3mUH6QYwkqxtM3">Technical documentation
+        <span class="ref" data-page-node-id="jnpMl0JZCM9vrLzveRymiL">Exploded diagrams, drawings, handling instructions</span></h2>
+    </div>
+    <div class="sec-b" data-page-node-id="q3icFHP5R64GVUGYhV0bBf">
+      <div class="doc" data-page-node-id="ANReTZpXJMv8JkxfklQAml">
+        <div class="ic" data-page-node-id="v6kjganE6FsSrNgWitH7SX">🖼</div>
+        <div class="info" data-page-node-id="AEmHS2AWjBSC3HwhmQXcDg"><b data-page-node-id="UtUFExlD4qwlYoVbWjr6Yl">Images related to the battery model</b><span data-page-node-id="CuZCjM3nosP5yTcRfV5uhc">PDF · diagrams &amp; explanatory material</span></div>
+        <a class="btn" href="#" data-page-node-id="T2B7cwqgOPGQ59Wi0NDbjQ">Download</a>
+      </div>
+    </div>
+  </section>-->
 
-        const [openBtn, downloadBtn] = card.querySelectorAll('.actions button');
-        const overlay = card.querySelector('.overlay');
-        openBtn.addEventListener('click', () => openDoc(doc.path));
-        overlay.addEventListener('click', () => openDoc(doc.path));
-        downloadBtn.addEventListener('click', () => downloadDoc(doc.path, doc.fileName));
+  <footer data-page-node-id="Ks0qgQO3gCppPGqrCnlf3o">
+    Information on this page is maintained <b data-page-node-id="XH1ItC6wEmtJQMabwQQFEI">complete, up-to-date and accurate</b> in accordance
+    with Art. 13(6) of Regulation (EU) 2023/1542. Language versions follow the requirements of the
+    Member State of placement. Page content version 1.0 · last updated 2026-09-10.<br data-page-node-id="yrBVxufUhOJ5z35T9C5lNB"><br data-page-node-id="9cvR9Jkm79LwgKW6xXyc85">
+    Questions: <a href="mailto:compliance@gpe.example.com" data-page-node-id="n78zB2fYRmxhifduDWkgxw"></a> ·
+    Loncin General Power Equipment Co.,Ltd<br data-page-node-id="nezCBx65OAQE52iXb586xf">
+    <span style="color:#b6bac0" data-page-node-id="K4EUi5Qxx7c3Wsy1XnDFiH">QR code: one code per model , printed durably
+    on the battery body per Art. 13(7); serial numbers remain a separate Art. 38 marking.</span>
+  </footer>
 
-        grid.appendChild(card);
-      });
-    </script>
-  </body>
+</div>
+</body>
 </html>

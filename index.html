@@ -15,6 +15,18 @@
   4. 页面语言：默认英语；须按 Art 13(6) 补充目标成员国要求的语言版本；
   5. 上线前由欧盟授权代表/合规负责人复核一遍。
 -->
+  <script>
+  (function(l) {
+    if (l.search[1] === '/') {
+      var decoded = l.search.slice(1).split('&').map(function(s) {
+        return s.replace(/~and~/g, '&')
+      }).join('?');
+      window.history.replaceState(null, null,
+        l.pathname.slice(0, -1) + decoded + l.hash
+      );
+    }
+  }(window.location))
+</script>
 <style>
   :root{
     --ink:#1a1d21; --ink-2:#5a6068; --ink-3:#8a9099;
@@ -130,6 +142,17 @@
       <!--<a href="#recycled" data-page-node-id="rfXNHwsAyALJFi2oBuhQbM">Recycled content</a>-->
       <!--<a href="#dd" data-page-node-id="8MY4CzEc4JiimNnz7zMpNk">Due diligence</a>-->
       <a href="#waste" data-page-node-id="6NXKViHKCUAIefvEup0A5k">End-of-life</a>
+       <div id="code-display"></div>
+
+       <script>
+       // 方法一：使用 URLSearchParams（现代浏览器推荐）
+       const params = new URLSearchParams(window.location.search);
+       const code = params.get('code');
+  
+       if (code) {
+       document.getElementById('code-display').textContent = 'Code: ' + code;
+        }
+      </script>
     </div>
   </div>
 

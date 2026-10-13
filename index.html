@@ -142,18 +142,6 @@
       <!--<a href="#recycled" data-page-node-id="rfXNHwsAyALJFi2oBuhQbM">Recycled content</a>-->
       <!--<a href="#dd" data-page-node-id="8MY4CzEc4JiimNnz7zMpNk">Due diligence</a>-->
       <a href="#waste" data-page-node-id="6NXKViHKCUAIefvEup0A5k">End-of-life</a>
-       <div id="code-display"></div>
-
-       <script>
-       // 方法一：使用 URLSearchParams（现代浏览器推荐）
-       const params = new URLSearchParams(window.location.search);
-       const code = params.get('code');
-  
-       if (code) {
-       document.getElementById('code-display').textContent = 'Code: ' + code;
-        }
-      </script>
-    </div>
   </div>
 
   <!-- ═══ 1. 产品与标签信息 ═══ -->
@@ -186,6 +174,17 @@
         <div class="v" data-page-node-id="QB6WgPz8qzoTs2RALYD35h">See QR code at the positive terminal</div></div>
       <div class="row" data-page-node-id="NUuIjUr7Yzd2d768DKdbHI"><div class="k" data-page-node-id="BRsKDynmHIch8DBKgoie3S">Symbol for separate collection of batteries</div>
         <div class="v" data-page-node-id="4P58mViE00L34TGGKlcRCk"><img src="batteries.png" alt="电池分类收集标志"> </div></div>
+      <div class="row" data-page-node-id="NUuIjUr7Yzd2d768DKdbJK"><div class="k" data-page-node-id="BRsKDynmHIch8DBKgoieJK">Code</div>
+        <div class="v" data-page-node-id="4P58mViE00L34TGGKlcRCk"><div id="code-display"> </div></div>
+        <script>
+        const params = new URLSearchParams(window.location.search);
+        const code = params.get('code');
+        if (code) {
+          document.getElementById('code-display').textContent = code;
+        }else {
+       document.getElementById('code-display').textContent = '未提供 code';
+       }
+      </script>
     </div>
   </section>
 

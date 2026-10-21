@@ -196,7 +196,7 @@
         </div>
         <div class="row" data-page-node-id="NUuIjUr7Yzd2d768DKdbHI">
           <div class="k" data-page-node-id="BRsKDynmHIch8DBKgoie3S">Symbol for separate collection of batteries</div>
-          <div class="v" data-page-node-id="4P58mViE00L34TGGKlcRCk"><img src=".\images\batteries.png" alt="电池分类收集标志"> </div>
+          <div class="v" data-page-node-id="4P58mViE00L34TGGKlcRCk"><img src=".\batteries.png" alt="电池分类收集标志"> </div>
         </div>
         <div class="row" data-page-node-id="6NLx9S2chdjsF9as48HDOK">
           <div class="k" data-page-node-id="rj7bJFdE196O3srwpmCYOK">Production date</div>
@@ -212,7 +212,7 @@
             const params = new URLSearchParams(window.location.search);
             const code = params.get('code');
             if (code) {
-              const partCode = code.substring(4, 9);
+              const partCode = code.substring(4, 10);
               document.getElementById('code-display').textContent = code;
               document.getElementById('data-display').textContent = partCode;
             } else {
